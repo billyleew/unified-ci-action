@@ -1,0 +1,17 @@
+name: unified-ci-action
+description: Detect runtime, parse configuration file .yml, resolve runtime and runtime version, and generate CI plan matrix
+runs:
+  using: node20
+  main: dist/index.js
+
+outputs:
+  runtime:
+    description: Detected runtime
+  runtime_version:
+    description: Resolved runtime version (e.g., 11, 17, 21, 3.11, 1.22)
+  working_directory:
+    description: working directory containing the project config files
+  matrix:
+    description: JSON Matrix for strategy.matrix
+  plan_json:
+    description: Full plan JSON
