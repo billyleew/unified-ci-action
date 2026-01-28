@@ -32,11 +32,16 @@ function buildCommands({ runtime, workspace, workingDirectory, goal }) {
   const noop = "";
 
   if (runtime === "node") {
-    // Detect angular/react optionally (MVP not changing commands)
-    // Later: handle nx, pnpm, yarn
+    const fs = require("fs");
+    const path = require("path");
+
+    const wd = path.join(workspace, workingDirectory || ".");
+    const hasLock = fs.existsSync(path.join(wd, "package-lock.json")) || fs.existsSync(path.join(workspace, "package-lock.json"));
+    const installCmd = hasLock ? "npm ci" : "npm install";
+
     return {
-      install: "npm ci",
-      test: goal === "pr-check" ? "npm test --if-present" : "npm test --if-present",
+      install: installCmd,
+      test: "npm test --if-present",
       build: "npm run build --if-present"
     };
   }
